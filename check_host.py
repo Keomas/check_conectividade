@@ -6,8 +6,6 @@ import sys
 import subprocess as sb
 lock = threading.Lock()    #evitando uso simultaneo
 
-#retorno = sb.getstatusoutput("sudo nmap -p 22,80,445 -O 192.168.25.5  | awk '/Host is/{print 1}/Running:/{print $2}/Host seems down./{print 0;print 0}'")
-#print(retorno)
 
 
 
