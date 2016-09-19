@@ -6,19 +6,34 @@ import sys
 import subprocess as sb
 lock = threading.Lock()    #evitando uso simultaneo
 
+#retorno = sb.getstatusoutput("sudo nmap -p 22,80,445 -O 192.168.25.5  | awk '/Host is/{print 1}/Running:/{print $2}/Host seems down./{print 0;print 0}'")
+#print(retorno)
 
 
 
 
 
-
+ 
 # O que cada thread  vai  fazer
 def check(host):
-	retorno = sb.getstatusoutput("sudo nmap -p 22,80,445 -O "+host[1]+" | awk '/Host is/{print 1}/Running:/{print $2}/Host seems down./{print 0;print 0}'")
-	if len(retorno[1]) > 1:
-		status=retorno[1].replace('\n','-')
+	retorno = sb.getstatusoutput("ping -c2 -w2 "+host[1]+" | awk '/ttl/{ split($6,a,\"=\");print a[2];exit}'")
+	ttl=-1
+	try:
+		ttl = int(retorno[1])
+	except ValueError:
+		ttl = 0	
+
+	if ttl == 0:
+		status="0-0"	
+	elif ttl <= 64:
+		status = "1-Linux"
+	elif ttl <=128:
+		status = "1-Microsoft"
+	elif ttl <= 255:
+		status = "1-desconhecido"
 	else:
-		status=retorno[1]+'-desconhecido'	
+		status="erro"				
+	
 	saida[host[0]][int(host[1].split('.')[3])]=status
 	saida[host[0]][0]='0-0'
 	#with lock:
@@ -95,8 +110,8 @@ for z in range(total):
 q.join()
 #print(saida)
 for k,v in saida.items():
-	print(k+"-> "+"/".join(v))   #mostrar sub-rede
-#	print("/".join(v))
+	#print(k+"->"+"/".join(v))   #mostrar sub-rede
+	print("/".join(v))
 
 
                 
