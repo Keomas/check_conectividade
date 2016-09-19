@@ -1,7 +1,7 @@
 # check_conectividade
 Checando conectividade numa e verificando sistema operacional
 
-Depndencias: Sistema GNU/linux, ter o nmap instalado. 
+Depndencias: Sistema GNU/linux
 
 Exemplo de execução:
 
@@ -31,7 +31,7 @@ posição 2 = 10.27.15.2
 Exemplo, considere a saida para o teste na rede 10.27.10.0 com 5 hosts :
 	0-0/1-Linux/0-0/0-0/0-0
 
-Apenas o host de ip 10.27.0.1 está online executando Linux como s.o.
+Apenas o host de ip 10.27.10.1 está online executando Linux como s.o.
 
 Obs: Os sistemas são detctado atraves do nmap, se o mesmo não encontrar nenhuma combinação, a saida será desconhecido. 
 
